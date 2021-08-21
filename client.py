@@ -10,5 +10,5 @@ class AccordClient(Client):
         # Thread created, check if the name has the thread emoji
         thread_emoji = "🧵"
 
-        if thread_emoji not in thread.name:
+        if not thread.name.startswith(thread_emoji):
             await thread.edit(name='{0}{1}'.format(thread_emoji, thread.name))
