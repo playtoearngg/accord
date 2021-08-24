@@ -1,11 +1,18 @@
 from .helpers import add_thread_emoji
-from discord import Client
+from discord.ext.commands import Bot
+from discord import Message, TextChannel
 
 
-class AccordClient(Client):
+class AccordClient(Bot):
     # Hello, world
     async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
+
+    # On message
+    async def on_message(self, message: Message):
+        # Auto pin messages in channels
+        if message.channel is TextChannel:
+            await message.pin()
 
     # On thread create
     async def on_thread_join(self, thread):

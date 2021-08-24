@@ -11,6 +11,6 @@ def get_var(key: str):
 
 
 # Instantiate Discord client
-accord = AccordClient()
+accord = AccordClient(command_prefix='a.')
 accord_loop = AccordLoop(accord)
 accord.run(get_var('DISCORD_TOKEN'))
