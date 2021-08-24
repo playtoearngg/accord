@@ -1,5 +1,5 @@
 import os
-from client import AccordClient
+from utils import AccordClient
 
 
 def get_var(key: str):
