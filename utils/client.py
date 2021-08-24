@@ -11,7 +11,7 @@ class AccordClient(Bot):
     # On message
     async def on_message(self, message: Message):
         # Auto pin messages in channels
-        if message.channel is TextChannel:
+        if isinstance(message.channel, TextChannel) and not message.is_system():
             await message.pin()
 
     # On thread create
