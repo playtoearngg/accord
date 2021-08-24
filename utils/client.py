@@ -1,3 +1,4 @@
+from .helpers import add_thread_emoji
 from discord import Client
 
 
@@ -7,8 +8,6 @@ class AccordClient(Client):
         print('Logged on as {0}!'.format(self.user))
 
     async def on_thread_join(self, thread):
-        # Thread created, check if the name has the thread emoji
-        thread_emoji = "🧵"
-
-        if not thread.name.startswith(thread_emoji):
-            await thread.edit(name='{0}{1}'.format(thread_emoji, thread.name))
+        # On thread create
+        await thread.edit(locked=True)          # Only mods can archive/unarchive
+        await add_thread_emoji(thread)
