@@ -1,5 +1,5 @@
 from .helpers import add_thread_emoji
-from discord import Client
+from discord import Activity, ActivityType, Client
 from discord.ext import tasks
 
 
@@ -17,6 +17,17 @@ class AccordLoop:
     @main.before_loop
     async def before_main(self):
         await self.client.wait_until_ready()
+
+    # Discord presence
+    async def update_presence(self):
+        # Count users in all guilds
+        num_users = 0
+        for guild in self.client.guilds:
+            # Don't count this bot
+            num_users += guild.member_count - 1
+
+        activity = Activity(name=f'{num_users} users', type=ActivityType.listening)
+        await self.client.change_presence(activity=activity)
 
     # Threads housekeeping
     async def do_threads(self):
