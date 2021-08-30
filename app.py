@@ -1,20 +1,11 @@
-from discord_slash import SlashCommand, SlashContext
 from cogs.helpers import add_thread_emoji, get_var
-from nextcord import Intents, Embed, Message, TextChannel, Thread
+from nextcord import Intents, Message, TextChannel, Thread
 from nextcord.ext.commands import Bot
 
 
-# Instantiate Discord client and slash commands
-accord = Bot(command_prefix='a.', intents=Intents.default())
-slash = SlashCommand(accord, sync_commands=True)
-
-
-@slash.slash(name="test", guild_ids=[879640837028446248])
-async def _test(ctx: SlashContext):
-    await ctx.defer()
-    print('Attempting reply')
-    embed = Embed(title="Embed Test")
-    await ctx.send(embed=embed)
+# Instantiate Discord client
+prefix = 'a/'
+accord = Bot(command_prefix=prefix, intents=Intents.default())
 
 
 # Hello, world
@@ -26,9 +17,17 @@ async def on_ready():
 # On message
 @accord.event
 async def on_message(message: Message):
-    # Auto pin messages in channels
-    if isinstance(message.channel, TextChannel) and not message.is_system():
-        await message.pin()
+    # Ignore messages sent by this bot
+    if message.author == accord.user:
+        return
+
+    # Is this a command?
+    if message.content.startswith(prefix):
+        await accord.process_commands(message)
+    else:
+        # Auto pin messages in channels
+        if isinstance(message.channel, TextChannel) and not message.is_system():
+            await message.pin()
 
 
 # On thread create
@@ -41,10 +40,15 @@ async def on_thread_join(thread: Thread):
     await thread.edit(locked=True)
 
 
-# On slash command
+# On thread update
 @accord.event
-async def on_slash_command(ctx: SlashContext):
-    print(ctx)
+async def on_thread_update(before: Thread, after: Thread):
+    # If manually unarchived, remove wastebasket emoji
+    if before.archived and not after.archived:
+        print('Thread {} unarchived'.format(before.id))
+        if before.name.startswith('🗑️'):
+            print('Renaming thread {}'.format(after.id))
+            await after.edit(name=after.name[1:])
 
 
 # Load cogs and run bot

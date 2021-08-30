@@ -10,7 +10,7 @@ def get_var(key: str):
 
 
 async def add_thread_emoji(thread: Thread):
-    thread_emoji = "🧵"
+    thread_emoji = '🧵'
 
     # Check if the name already has the thread emoji
     if not thread.name.startswith(thread_emoji):

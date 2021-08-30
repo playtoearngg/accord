@@ -1,4 +1,4 @@
-from utils.helpers import add_thread_emoji
+from cogs.helpers import add_thread_emoji
 from nextcord import Activity, ActivityType
 from nextcord.ext import tasks
 from nextcord.ext.commands import Bot, Cog
@@ -36,10 +36,9 @@ class AccordLoop(Cog):
     async def do_guilds(self):
         for guild in self.client.guilds:
             # Threads housekeeping
-            # Add thread emoji to thread titles
             for thread in guild.threads:
                 # Unarchive thread if not manually archived by a mod
-                if thread.archived and not thread.name.startswith("🗑️"):
+                if thread.archived and not thread.name.startswith('🗑️'):
                     await thread.edit(archived=False)
 
                 # Add thread emoji to all threads in history
