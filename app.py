@@ -1,6 +1,6 @@
 import os
 from utils import AccordClient
-from utils.loop import AccordLoop
+from cogs import AccordLoop
 
 
 def get_var(key: str):
@@ -10,7 +10,7 @@ def get_var(key: str):
     raise RuntimeError(f'Missing configuration key {key}. Please check your build vars.')
 
 
-# Instantiate Discord client
+# Instantiate Discord client and cogs
 accord = AccordClient(command_prefix='a.')
-accord_loop = AccordLoop(accord)
+accord.load_extension("cogs")
 accord.run(get_var('DISCORD_TOKEN'))
