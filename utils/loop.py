@@ -1,6 +1,6 @@
 from .helpers import add_thread_emoji
-from discord import Activity, ActivityType, Client
-from discord.ext import tasks
+from nextcord import Activity, ActivityType, Client
+from nextcord.ext import tasks
 
 
 class AccordLoop:

@@ -1,6 +1,6 @@
 from .helpers import add_thread_emoji
-from discord.ext.commands import Bot
-from discord import Message, TextChannel
+from nextcord.ext.commands import Bot
+from nextcord import Message, TextChannel
 
 
 class AccordClient(Bot):
