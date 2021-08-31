@@ -5,8 +5,8 @@ from nextcord.ext.commands import Bot, Cog
 
 
 class AccordLoop(Cog):
-    def __init__(self, accord_client: Bot):
-        self.client = accord_client
+    def __init__(self, client: Bot):
+        self.client = client
         self.main.start()
 
     # Run housekeeping every 5 min
@@ -48,6 +48,6 @@ class AccordLoop(Cog):
                 await thread.edit(locked=True)
 
             # Channels housekeeping
-            # Only allow @everyone to message threads, not channels
             for channel in guild.text_channels:
+                # Only allow @everyone to message threads, not channels
                 await lock_channel(channel)
