@@ -1,4 +1,5 @@
-from cogs.helpers import add_thread_emoji, get_var
+from cogs.helpers import add_thread_emoji, get_var, lock_channel
+from nextcord.abc import GuildChannel
 from nextcord import Intents, Message, TextChannel, Thread
 from nextcord.ext.commands import Bot
 
@@ -49,6 +50,22 @@ async def on_thread_update(before: Thread, after: Thread):
         if before.name.startswith('🗑️'):
             print('Renaming thread {}'.format(after.id))
             await after.edit(name=after.name[1:])
+
+
+# On channel create
+@accord.event
+async def on_guild_channel_create(channel: GuildChannel):
+    if isinstance(channel, TextChannel):
+        print('Locking new channel {}'.format(channel.id))
+        await lock_channel(channel)
+
+
+# On channel update
+@accord.event
+async def on_guild_channel_update(_: GuildChannel, after: GuildChannel):
+    if isinstance(after, TextChannel):
+        print('Locking updated channel {}'.format(after.id))
+        await lock_channel(after)
 
 
 # Load cogs and run bot

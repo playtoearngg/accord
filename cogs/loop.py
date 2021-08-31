@@ -1,4 +1,4 @@
-from cogs.helpers import add_thread_emoji
+from cogs.helpers import add_thread_emoji, lock_channel
 from nextcord import Activity, ActivityType
 from nextcord.ext import tasks
 from nextcord.ext.commands import Bot, Cog
@@ -50,7 +50,4 @@ class AccordLoop(Cog):
             # Channels housekeeping
             # Only allow @everyone to message threads, not channels
             for channel in guild.text_channels:
-                perms = channel.overwrites_for(guild.default_role)
-                perms.send_messages = False
-                perms.send_messages_in_threads = True
-                await channel.set_permissions(guild.default_role, overwrite=perms)
+                await lock_channel(channel)
